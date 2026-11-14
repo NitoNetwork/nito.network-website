@@ -1,0 +1,102 @@
+.ledger-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.logo-fragments {
+  position: absolute;
+  width: 160%;
+  height: 160%;
+  left: -30%;
+  top: -30%;
+  pointer-events: none;
+}
+.has-fragments .ledger-art {
+  opacity: 0;
+}
+.logo-trigger {
+  position: absolute;
+  inset: 4%;
+  width: 92%;
+  height: 92%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.logo-trigger:focus-visible {
+  outline: 2px solid #67e4bb;
+  outline-offset: -10px;
+}
+.logo-trigger[hidden],
+.motion-setting[hidden] {
+  display: none;
+}
+.motion-setting {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.motion-setting input {
+  appearance: none;
+  width: 40px;
+  height: 24px;
+  flex: 0 0 40px;
+  margin: 0;
+  padding: 2px;
+  border: 1px solid var(--muted);
+  border-radius: 20px;
+  background: var(--bg);
+  cursor: pointer;
+}
+.motion-setting input::before {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: transform 180ms;
+}
+.motion-setting input:checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.motion-setting input:checked::before {
+  background: var(--primary-text);
+  transform: translateX(16px);
+}
+.motion-setting input:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+html[data-motion="paused"],
+html[data-motion="paused"] *,
+html[data-motion="paused"] *::before,
+html[data-motion="paused"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce), (forced-colors: active) {
+  .logo-fragments,
+  .logo-trigger {
+    display: none;
+  }
+  .has-fragments .ledger-art {
+    opacity: 1;
+  }
+}
+@media (forced-colors: active) {
+  .motion-setting input {
+    appearance: auto;
+  }
+  .motion-setting input::before {
+    display: none;
+  }
+}

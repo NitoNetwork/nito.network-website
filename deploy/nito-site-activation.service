@@ -1,0 +1,27 @@
+[Unit]
+Description=Nito Network public activation snapshot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=nito-site-activation
+Group=nito-site-activation
+StateDirectory=nito-site-activation
+StateDirectoryMode=0755
+ExecStart=/usr/bin/python3 /opt/nito-site-runtime/current/scripts/collect-activation.py --config /opt/nito-site-runtime/current/dist/data/activation-config.json --output /var/lib/nito-site-activation/activation.json
+TimeoutStartSec=40
+UMask=0022
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+MemoryMax=64M
+CPUQuota=10%
+StandardOutput=null
+StandardError=journal

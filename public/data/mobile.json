@@ -1,0 +1,26 @@
+{
+  "tag": "2.0.1",
+  "url": "https://github.com/NitoNetwork/nito-wallet-mobile/releases/tag/2.0.1",
+  "published": "2026-11-08T16:23:47Z",
+  "checked": "2026-11-14T10:57:43.477Z",
+  "assets": [
+    {
+      "name": "Nito-Wallet-Android-2.0.1.aab",
+      "url": "https://github.com/NitoNetwork/nito-wallet-mobile/releases/download/2.0.1/Nito-Wallet-Android-2.0.1.aab",
+      "size": 80745973,
+      "digest": "sha256:25c406ecc603ca1da9c2f81ca7baea38f29f32092155f3ed87a8666e9bc16afb"
+    },
+    {
+      "name": "Nito-Wallet-Android-2.0.1.apk",
+      "url": "https://github.com/NitoNetwork/nito-wallet-mobile/releases/download/2.0.1/Nito-Wallet-Android-2.0.1.apk",
+      "size": 112079136,
+      "digest": "sha256:6d60020b15f02b0d6cde1b34aea4201efea51e9467387ad25ff58e7efcbc06c4"
+    },
+    {
+      "name": "Nito-Wallet-iOS-2.0.1-unsigned.ipa",
+      "url": "https://github.com/NitoNetwork/nito-wallet-mobile/releases/download/2.0.1/Nito-Wallet-iOS-2.0.1-unsigned.ipa",
+      "size": 16794986,
+      "digest": "sha256:6d17ceb4ea27e210c38cd198792acb826fc9dd31e7d36214ddd4f9b99cd2c637"
+    }
+  ]
+}

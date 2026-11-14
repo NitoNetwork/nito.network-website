@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh Nito Orchard activation once per minute
+
+[Timer]
+OnActiveSec=60s
+OnUnitActiveSec=60s
+AccuracySec=1s
+Unit=nito-site-activation.service
+
+[Install]
+WantedBy=timers.target

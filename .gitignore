@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.vite/
+verification/
+*.log
+.cache/
+__pycache__/
+.env
+.env.*
+!.env.example
+coverage/
+playwright-report/
+test-results/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

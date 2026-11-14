@@ -1,0 +1,10 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Generated and dependency directories"
+paths = [
+  '''^\.cache/''',
+  '''^dist/''',
+  '''^node_modules/''',
+]
