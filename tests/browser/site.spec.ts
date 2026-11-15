@@ -42,9 +42,19 @@ test("home supports its primary interactions without layout overflow", async ({
     "aria-label",
     "Disperse and rebuild the Nito logo",
   );
+  const pickaxe = page.locator(".logo-pickaxe-cursor");
+  await expect(pickaxe).toHaveCount(1);
+  await expect(pickaxe).toHaveAttribute("aria-hidden", "true");
+  await expect(pickaxe.locator("img")).toHaveAttribute(
+    "src",
+    "/media/nito-pickaxe-3d.webp",
+  );
+  await expect(page.locator(".ledger-monogram")).toHaveClass(
+    /has-live-pickaxe/,
+  );
   expect(
     await logoTrigger.evaluate((element) => getComputedStyle(element).cursor),
-  ).toContain("pickaxe-cursor.svg");
+  ).toBe("none");
   const ledger = page.locator(".ledger-scene");
   const monogramBox = await page.locator(".ledger-monogram").boundingBox();
   expect(monogramBox).not.toBeNull();
@@ -53,8 +63,33 @@ test("home supports its primary interactions without layout overflow", async ({
     monogramBox!.y + monogramBox!.height * 0.5,
   );
   await expect(ledger).toHaveAttribute("data-interacting", "true");
+  await expect(pickaxe).toHaveClass(/is-visible/);
+  await expect(page.locator(".pickaxe-tool")).toHaveCSS(
+    "animation-name",
+    "pickaxe-mining",
+  );
+  const cursorPosition = await pickaxe.evaluate(
+    (element) => getComputedStyle(element).transform,
+  );
+  await page.mouse.move(
+    monogramBox!.x + monogramBox!.width * 0.56,
+    monogramBox!.y + monogramBox!.height * 0.54,
+  );
+  await expect
+    .poll(() =>
+      pickaxe.evaluate((element) => getComputedStyle(element).transform),
+    )
+    .not.toBe(cursorPosition);
+  await page.mouse.down();
+  await expect(pickaxe).toHaveClass(/is-striking/);
+  await page.mouse.up();
+  await expect(page.locator(".ledger-monogram")).toHaveAttribute(
+    "data-fragment-state",
+    "burst",
+  );
   await page.mouse.move(20, 200);
   await expect(ledger).not.toHaveAttribute("data-interacting", "true");
+  await expect(pickaxe).not.toHaveClass(/is-visible/);
   await expect(page.locator(".chart-data tbody tr")).toHaveCount(4);
   await expect(page.locator('[data-horizon="10"]')).toHaveAttribute(
     "aria-pressed",

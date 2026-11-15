@@ -11,6 +11,9 @@ import {
 
 type Tile = Fragment & { sourceX: number; sourceY: number; size: number };
 
+const PICKAXE_HOTSPOT_X = 106;
+const PICKAXE_HOTSPOT_Y = 48;
+
 export function installLogoFragments(root: HTMLElement, copy: Copy) {
   const picture = root.querySelector<HTMLPictureElement>(
     "picture.ledger-monogram",
@@ -38,6 +41,25 @@ export function installLogoFragments(root: HTMLElement, copy: Copy) {
   const options = { signal: lifetime.signal };
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const forced = matchMedia("(forced-colors: active)");
+  const precisePointer = matchMedia("(hover: hover) and (pointer: fine)");
+  const pickaxe = document.createElement("span");
+  pickaxe.className = "logo-pickaxe-cursor";
+  pickaxe.setAttribute("aria-hidden", "true");
+  const pickaxeTool = document.createElement("span");
+  pickaxeTool.className = "pickaxe-tool";
+  const pickaxeImage = document.createElement("img");
+  pickaxeImage.src = "/media/nito-pickaxe-3d.webp";
+  pickaxeImage.alt = "";
+  pickaxeImage.draggable = false;
+  const pickaxeImpact = document.createElement("span");
+  pickaxeImpact.className = "pickaxe-impact";
+  const pickaxeSparks = document.createElement("span");
+  pickaxeSparks.className = "pickaxe-sparks";
+  for (let index = 0; index < 6; index++)
+    pickaxeSparks.append(document.createElement("i"));
+  pickaxeTool.append(pickaxeImage);
+  pickaxe.append(pickaxeTool, pickaxeImpact, pickaxeSparks);
+  document.body.append(pickaxe);
   const texture = document.createElement("canvas");
   let tiles: Tile[] = [];
   let ready = false,
@@ -51,6 +73,10 @@ export function installLogoFragments(root: HTMLElement, copy: Copy) {
   let size = 0,
     ratio = 1,
     lastPaint = 0;
+  let cursorFrame = 0,
+    cursorX = -120,
+    cursorY = -120,
+    strikeTimer = 0;
   const allowed = () =>
     ready &&
     visible &&
@@ -60,6 +86,60 @@ export function installLogoFragments(root: HTMLElement, copy: Copy) {
     !motionPaused() &&
     !reduced.matches &&
     !forced.matches;
+  const livePickaxeAllowed = () =>
+    precisePointer.matches &&
+    !trigger.hidden &&
+    !suspended &&
+    !disposed &&
+    !document.hidden &&
+    !motionPaused() &&
+    !reduced.matches &&
+    !forced.matches;
+  function paintPickaxe() {
+    cursorFrame = 0;
+    pickaxe.style.transform = `translate3d(${cursorX - PICKAXE_HOTSPOT_X}px, ${cursorY - PICKAXE_HOTSPOT_Y}px, 0)`;
+  }
+  function hidePickaxe() {
+    cancelAnimationFrame(cursorFrame);
+    cursorFrame = 0;
+    clearTimeout(strikeTimer);
+    strikeTimer = 0;
+    pickaxe.classList.remove("is-visible", "is-striking");
+  }
+  function movePickaxe(event: PointerEvent) {
+    if (
+      !event.isPrimary ||
+      event.pointerType !== "mouse" ||
+      !livePickaxeAllowed()
+    ) {
+      hidePickaxe();
+      return;
+    }
+    cursorX = event.clientX;
+    cursorY = event.clientY;
+    if (!pickaxe.classList.contains("is-visible")) {
+      paintPickaxe();
+      pickaxe.classList.add("is-visible");
+      return;
+    }
+    if (!cursorFrame) cursorFrame = requestAnimationFrame(paintPickaxe);
+  }
+  function strikePickaxe(event: PointerEvent) {
+    if (
+      !event.isPrimary ||
+      event.pointerType !== "mouse" ||
+      !pickaxe.classList.contains("is-visible")
+    )
+      return;
+    clearTimeout(strikeTimer);
+    pickaxe.classList.remove("is-striking");
+    void pickaxe.offsetWidth;
+    pickaxe.classList.add("is-striking");
+    strikeTimer = window.setTimeout(() => {
+      pickaxe.classList.remove("is-striking");
+      strikeTimer = 0;
+    }, 580);
+  }
   function stop() {
     cancelAnimationFrame(frame);
     frame = 0;
@@ -129,6 +209,9 @@ export function installLogoFragments(root: HTMLElement, copy: Copy) {
       ready && !motionPaused() && !reduced.matches && !forced.matches;
     trigger.hidden = !enabled;
     host.classList.toggle("has-fragments", enabled);
+    const livePickaxe = enabled && visible && precisePointer.matches;
+    host.classList.toggle("has-live-pickaxe", livePickaxe);
+    if (!livePickaxe) hidePickaxe();
     root.removeAttribute("aria-hidden");
     if (!allowed()) {
       burstStart = null;
@@ -224,9 +307,16 @@ export function installLogoFragments(root: HTMLElement, copy: Copy) {
     },
     options,
   );
+  trigger.addEventListener("pointerenter", movePickaxe, options);
+  trigger.addEventListener("pointermove", movePickaxe, options);
+  trigger.addEventListener("pointerdown", strikePickaxe, options);
+  trigger.addEventListener("pointerleave", hidePickaxe, options);
+  trigger.addEventListener("pointercancel", hidePickaxe, options);
+  window.addEventListener("blur", hidePickaxe, options);
   document.addEventListener(motionChange, sync, options);
   reduced.addEventListener("change", sync, options);
   forced.addEventListener("change", sync, options);
+  precisePointer.addEventListener("change", sync, options);
   document.addEventListener("visibilitychange", sync, options);
   window.addEventListener(
     "pagehide",
@@ -263,7 +353,9 @@ export function installLogoFragments(root: HTMLElement, copy: Copy) {
     lifetime.abort();
     observer.disconnect();
     geometry.disconnect();
-    host.classList.remove("has-fragments");
+    hidePickaxe();
+    host.classList.remove("has-fragments", "has-live-pickaxe");
+    pickaxe.remove();
     canvas.remove();
     trigger.remove();
     texture.width = texture.height = canvas.width = canvas.height = 0;
