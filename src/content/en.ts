@@ -1,5 +1,6 @@
 export const en = {
   logoReplay: "Disperse and rebuild the Nito logo",
+  logoTooltip: "Mine me!",
   motionSetting: "Animations",
   motionSystem: "Disabled by your system's reduced-motion preference",
   nodePaths: "Installation and data",

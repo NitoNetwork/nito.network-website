@@ -1,6 +1,7 @@
 import type { Copy } from "./en";
 export const de: Copy = {
   logoReplay: "Das Nito-Logo zerlegen und wieder zusammensetzen",
+  logoTooltip: "Schürf mich!",
   motionSetting: "Animationen",
   motionSystem:
     "Durch die Systemeinstellung für reduzierte Bewegung deaktiviert",

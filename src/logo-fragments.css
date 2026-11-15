@@ -23,7 +23,9 @@
   border: 0;
   background: transparent;
   border-radius: 4px;
-  cursor: pointer;
+  cursor:
+    url("/media/pickaxe-cursor.svg") 27 5,
+    pointer;
   touch-action: pan-y;
 }
 .logo-trigger:focus-visible {

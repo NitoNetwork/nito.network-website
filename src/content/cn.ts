@@ -1,6 +1,7 @@
 import type { Copy } from "./en";
 export const cn: Copy = {
   logoReplay: "打散并重组 Nito 标志",
+  logoTooltip: "用镐敲我！",
   motionSetting: "动画",
   motionSystem: "已根据系统的减少动态效果设置停用",
   nodePaths: "安装与数据",

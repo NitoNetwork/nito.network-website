@@ -1,6 +1,7 @@
 import type { Copy } from "./en";
 export const ru: Copy = {
   logoReplay: "Разобрать и собрать логотип Nito",
+  logoTooltip: "Ударь киркой!",
   motionSetting: "Анимация",
   motionSystem: "Отключена системной настройкой уменьшения движения",
   nodePaths: "Установка и данные",

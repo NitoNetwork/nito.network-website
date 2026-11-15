@@ -33,7 +33,7 @@ export function installLogoFragments(root: HTMLElement, copy: Copy) {
   trigger.type = "button";
   trigger.className = "logo-trigger";
   trigger.setAttribute("aria-label", copy.logoReplay);
-  trigger.title = copy.logoReplay;
+  trigger.title = copy.logoTooltip;
   const lifetime = new AbortController();
   const options = { signal: lifetime.signal };
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");

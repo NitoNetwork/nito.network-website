@@ -1,6 +1,7 @@
 import type { Copy } from "./en";
 export const nl: Copy = {
   logoReplay: "Het Nito-logo uiteen laten vallen en weer opbouwen",
+  logoTooltip: "Hak op mij!",
   motionSetting: "Animaties",
   motionSystem: "Uitgeschakeld door de systeemvoorkeur voor minder beweging",
   nodePaths: "Installatie en gegevens",

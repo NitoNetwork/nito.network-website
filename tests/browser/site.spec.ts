@@ -36,6 +36,15 @@ test("home supports its primary interactions without layout overflow", async ({
   await page.goto("/en/");
   await expect(page.locator("h1")).toHaveCount(1);
   await expectRenderedLedger(page);
+  const logoTrigger = page.locator(".logo-trigger");
+  await expect(logoTrigger).toHaveAttribute("title", "Mine me!");
+  await expect(logoTrigger).toHaveAttribute(
+    "aria-label",
+    "Disperse and rebuild the Nito logo",
+  );
+  expect(
+    await logoTrigger.evaluate((element) => getComputedStyle(element).cursor),
+  ).toContain("pickaxe-cursor.svg");
   const ledger = page.locator(".ledger-scene");
   const monogramBox = await page.locator(".ledger-monogram").boundingBox();
   expect(monogramBox).not.toBeNull();

@@ -1,6 +1,7 @@
 import type { Copy } from "./en";
 export const es: Copy = {
   logoReplay: "Dispersar y reconstruir el logotipo de Nito",
+  logoTooltip: "¡Pícame!",
   motionSetting: "Animaciones",
   motionSystem:
     "Desactivadas por la preferencia de movimiento reducido del sistema",
