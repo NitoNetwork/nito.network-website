@@ -950,6 +950,9 @@ summary:focus-visible {
 .release-verification .code-block {
   max-height: none;
   margin-bottom: 18px;
+  white-space: pre;
+  overflow-x: auto;
+  word-break: normal;
 }
 .web-wallet p {
   max-width: 650px;
