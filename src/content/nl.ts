@@ -101,6 +101,14 @@ export const nl: Copy = {
   checksums: "Download controleren",
   checksumText:
     "Vergelijk de SHA-256-waarde van het gedownloade bestand met de gepubliceerde waarde.",
+  coreSignatureTitle: "Nito Core-releases verifiëren",
+  coreSignaturePurpose:
+    "Gebruik deze sleutel om de losse SHA256SUMS.minisig-handtekening te verifiëren wanneer die bij een officiële Nito Core-release is opgenomen.",
+  coreSignatureKeyId: "Minisign-sleutel-ID",
+  coreSignatureKeyLink: "Open de ruwe openbare Minisign-sleutel",
+  coreSignatureCommand: "Verificatieopdracht",
+  coreSignatureTrusted:
+    "Bij een geldige verificatie moet de volgende vertrouwde opmerking worden weergegeven:",
   copy: "Kopiëren",
   copied: "Gekopieerd",
   copyFail: "Kopiëren niet beschikbaar. Selecteer en kopieer de tekst.",

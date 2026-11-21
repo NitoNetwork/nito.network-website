@@ -100,6 +100,14 @@ export const en = {
   checksums: "Verify your download",
   checksumText:
     "Compare the SHA-256 digest of the downloaded file with the digest published for that release.",
+  coreSignatureTitle: "Verify Nito Core releases",
+  coreSignaturePurpose:
+    "Use this key to verify the detached SHA256SUMS.minisig signature when it is included with an official Nito Core release.",
+  coreSignatureKeyId: "Minisign key ID",
+  coreSignatureKeyLink: "Open the raw Minisign public key",
+  coreSignatureCommand: "Verification command",
+  coreSignatureTrusted:
+    "A valid verification must display the trusted comment:",
   copy: "Copy",
   copied: "Copied",
   copyFail: "Copy unavailable. Select and copy the text.",

@@ -100,6 +100,14 @@ export const ru: Copy = {
   checksums: "Проверить загрузку",
   checksumText:
     "Сравните SHA-256 загруженного файла со значением, опубликованным для версии.",
+  coreSignatureTitle: "Проверка выпусков Nito Core",
+  coreSignaturePurpose:
+    "Используйте этот ключ для проверки отдельной подписи SHA256SUMS.minisig, когда она включена в официальный выпуск Nito Core.",
+  coreSignatureKeyId: "Идентификатор ключа Minisign",
+  coreSignatureKeyLink: "Открыть необработанный открытый ключ Minisign",
+  coreSignatureCommand: "Команда проверки",
+  coreSignatureTrusted:
+    "При успешной проверке должен отображаться доверенный комментарий:",
   copy: "Копировать",
   copied: "Скопировано",
   copyFail: "Копирование недоступно. Выделите и скопируйте текст.",

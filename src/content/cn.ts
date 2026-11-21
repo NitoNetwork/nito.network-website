@@ -93,6 +93,13 @@ export const cn: Copy = {
   unavailable: "暂时无法检查版本。请查看官方发布页面。",
   checksums: "验证下载文件",
   checksumText: "将下载文件的 SHA-256 值与该版本公布的值进行比较。",
+  coreSignatureTitle: "验证 Nito Core 发布版本",
+  coreSignaturePurpose:
+    "当官方 Nito Core 发布版本包含 SHA256SUMS.minisig 分离签名时，请使用此密钥进行验证。",
+  coreSignatureKeyId: "Minisign 密钥 ID",
+  coreSignatureKeyLink: "打开原始 Minisign 公钥",
+  coreSignatureCommand: "验证命令",
+  coreSignatureTrusted: "验证成功时必须显示以下可信注释：",
   copy: "复制",
   copied: "已复制",
   copyFail: "无法自动复制。请选中并复制文本。",

@@ -228,6 +228,7 @@ test("copy feedback is visible on success and denial and download matches the sc
 
 test("wallet checksums copy with visible feedback and safe fallback links", async ({
   page,
+  request,
 }) => {
   await page.addInitScript(() =>
     Object.defineProperty(navigator, "clipboard", {
@@ -243,6 +244,26 @@ test("wallet checksums copy with visible feedback and safe fallback links", asyn
     page.locator('#core-downloads a[href*="/download/"]'),
   ).toHaveCount(core.assets.length);
   await page.locator("details.disclosure summary").click();
+  const releaseVerification = page.locator(".release-verification");
+  await expect(releaseVerification).toContainText("Verify Nito Core releases");
+  await expect(releaseVerification).toContainText("D060C20B3417848D");
+  await expect(releaseVerification).toContainText(
+    "Nito Core vX.Y.Z SHA256SUMS",
+  );
+  await expect(
+    releaseVerification.getByRole("link", {
+      name: "Open the raw Minisign public key",
+    }),
+  ).toHaveAttribute("href", "/security/nito-core-release.pub");
+  await expect(releaseVerification.locator("pre code")).toHaveText(
+    "minisign -Vm SHA256SUMS \\\n  -x SHA256SUMS.minisig \\\n  -P RWSNhBc0C8Jg0H6yw7+V3qiCv/k/7NZox9P9oIGV/veXmCUrI6Bmn9oJ",
+  );
+  const publicKey = await request.get("/security/nito-core-release.pub");
+  expect(publicKey.ok()).toBe(true);
+  expect(await publicKey.text()).toBe(
+    "untrusted comment: minisign public key D060C20B3417848D\n" +
+      "RWSNhBc0C8Jg0H6yw7+V3qiCv/k/7NZox9P9oIGV/veXmCUrI6Bmn9oJ\n",
+  );
   const copy = page.locator("#checksums [data-copy]").first();
   await copy.click();
   await expect(copy).toHaveAttribute("data-copy-state", "success");

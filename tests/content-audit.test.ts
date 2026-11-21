@@ -3,7 +3,15 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { translations } from "../src/content";
 import { languageTags, locales, MAX_SUPPLY, rewards } from "../src/data";
-import { downloadsView } from "../src/downloads-view";
+import {
+  CORE_RELEASE_KEY_ID,
+  CORE_RELEASE_KEY_PATH,
+  CORE_RELEASE_PUBLIC_KEY,
+  CORE_RELEASE_TRUSTED_COMMENT,
+  CORE_RELEASE_VERIFY_COMMAND,
+  coreReleaseVerificationView,
+  downloadsView,
+} from "../src/downloads-view";
 import { validateRelease, type Release } from "../src/releases";
 
 test("download sizes use binary units in every locale", () => {
@@ -26,6 +34,28 @@ test("download sizes use binary units in every locale", () => {
     const size = new Intl.NumberFormat(languageTags[locale]).format(1234);
     assert.ok(html.includes(`${size} MiB`), locale);
     assert.doesNotMatch(html, /\bMB\b/);
+  }
+});
+
+test("Core release verification publishes one scoped Minisign key", () => {
+  const expected =
+    `untrusted comment: minisign public key ${CORE_RELEASE_KEY_ID}\n` +
+    `${CORE_RELEASE_PUBLIC_KEY}\n`;
+  assert.equal(
+    readFileSync(`public${CORE_RELEASE_KEY_PATH}`, "utf8"),
+    expected,
+  );
+  assert.equal(
+    CORE_RELEASE_VERIFY_COMMAND,
+    `minisign -Vm SHA256SUMS \\\n  -x SHA256SUMS.minisig \\\n  -P ${CORE_RELEASE_PUBLIC_KEY}`,
+  );
+  for (const locale of locales) {
+    const html = coreReleaseVerificationView(translations[locale]);
+    assert.ok(html.includes(CORE_RELEASE_KEY_PATH), locale);
+    assert.ok(html.includes(CORE_RELEASE_KEY_ID), locale);
+    assert.ok(html.includes(CORE_RELEASE_PUBLIC_KEY), locale);
+    assert.ok(html.includes(CORE_RELEASE_TRUSTED_COMMENT), locale);
+    assert.doesNotMatch(html, /private key|passphrase/i);
   }
 });
 

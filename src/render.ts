@@ -24,7 +24,11 @@ import { whitepaperPage } from "./whitepaper-view";
 import { whitepaperCopy } from "./content/whitepaper";
 import { toolPage } from "./tools-view";
 import type { Copy } from "./content/en";
-import { downloadsView, checksumsView } from "./downloads-view";
+import {
+  downloadsView,
+  checksumsView,
+  coreReleaseVerificationView,
+} from "./downloads-view";
 import coreCache from "../public/data/core.json";
 import mobileCache from "../public/data/mobile.json";
 
@@ -112,7 +116,7 @@ function home(c: Copy, l: Locale) {
   )}</div></div></section>`;
 }
 function wallets(c: Copy, l: Locale) {
-  return `${title(c, c.wallets, c.walletsTitle, c.walletsIntro)}<section class="section wrap" id="core"><div class="split-heading"><div><span class="eyebrow">${e(c.desktop)}</span><h2>Nito Core</h2><p>${e(c.desktopText)}</p></div>${a(links.core, c.allReleases)}</div><div id="core-downloads">${downloadsView(coreCache, c, l)}</div><details class="disclosure"><summary>${e(c.checksums)}${icon("plus")}</summary><p>${e(c.checksumText)}</p><div id="checksums">${checksumsView(coreCache, c)}</div></details></section>${mobile(c)}<section class="section wrap web-wallet"><span class="eyebrow">${e(c.web)}</span><h2>${e(c.webTitle)}</h2><p>${e(c.webText)}</p>${a(links.webwallet, c.webCta)}</section>`;
+  return `${title(c, c.wallets, c.walletsTitle, c.walletsIntro)}<section class="section wrap" id="core"><div class="split-heading"><div><span class="eyebrow">${e(c.desktop)}</span><h2>Nito Core</h2><p>${e(c.desktopText)}</p></div>${a(links.core, c.allReleases)}</div><div id="core-downloads">${downloadsView(coreCache, c, l)}</div><details class="disclosure"><summary>${e(c.checksums)}${icon("plus")}</summary><p>${e(c.checksumText)}</p><div id="checksums">${checksumsView(coreCache, c)}</div>${coreReleaseVerificationView(c)}</details></section>${mobile(c)}<section class="section wrap web-wallet"><span class="eyebrow">${e(c.web)}</span><h2>${e(c.webTitle)}</h2><p>${e(c.webText)}</p>${a(links.webwallet, c.webCta)}</section>`;
 }
 function network(c: Copy, l: Locale) {
   const f = new Intl.NumberFormat(languageTags[l]);

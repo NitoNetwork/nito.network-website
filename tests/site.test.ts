@@ -57,7 +57,7 @@ test("resources and downloads open safely without changing internal navigation",
         /<a\b([^>]*\bhref="([^"]+)"[^>]*)>/g,
       )) {
         if (
-          /^(https?:\/\/|\/downloads\/|\/(?:en|fr|de|es|nl|ru|cn)\/whitepaper\/)/.test(
+          /^(https?:\/\/|\/(?:downloads|security)\/|\/(?:en|fr|de|es|nl|ru|cn)\/whitepaper\/)/.test(
             href,
           )
         ) {
@@ -541,13 +541,18 @@ test("static builds contain every route, local resource and security fallback", 
       assert.match(html, /id="site-particles" aria-hidden="true"/);
       assert.doesNotMatch(html, /stratum|nitopool/i);
       for (const m of html.matchAll(
-        /(?:src|href)="(\/(?:assets|media|data|downloads)\/[^"#]+)"/g,
+        /(?:src|href)="(\/(?:assets|media|data|downloads|security)\/[^"#]+)"/g,
       )) {
         const assetPath = m[1].split("?", 1)[0];
         assert.ok(existsSync("dist" + assetPath), m[1]);
       }
     }
   assert.ok(existsSync("dist/404.html"));
+  assert.equal(
+    readFileSync("dist/security/nito-core-release.pub", "utf8"),
+    "untrusted comment: minisign public key D060C20B3417848D\n" +
+      "RWSNhBc0C8Jg0H6yw7+V3qiCv/k/7NZox9P9oIGV/veXmCUrI6Bmn9oJ\n",
+  );
   for (const path of [
     "dist/tools/nitopool",
     "dist/tools/stratum",
@@ -565,5 +570,13 @@ test("static builds contain every route, local resource and security fallback", 
   assert.equal(
     scripts.filter((name) => name.startsWith("whitepaper-reader-")).length,
     1,
+  );
+});
+
+test("the Nginx example serves the release key as unmodified plain text", () => {
+  const nginx = readFileSync("deploy/nito.network.nginx.conf.example", "utf8");
+  assert.match(
+    nginx,
+    /location = \/security\/nito-core-release\.pub \{[\s\S]*?default_type text\/plain;[\s\S]*?gzip off;[\s\S]*?try_files \$uri =404;[\s\S]*?\}/,
   );
 });

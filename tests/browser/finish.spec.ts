@@ -45,6 +45,8 @@ test("all localized pages reflow at 320px and at the CSS viewport of 200% deskto
       "easynode/",
     ]) {
       await page.goto(`/${locale}/${path}`);
+      if (path === "wallets/")
+        await page.locator("details.disclosure summary").click();
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,

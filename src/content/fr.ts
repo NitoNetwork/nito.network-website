@@ -102,6 +102,14 @@ export const fr: Copy = {
   checksums: "Vérifier le téléchargement",
   checksumText:
     "Comparez l’empreinte SHA-256 du fichier téléchargé à celle publiée pour cette version.",
+  coreSignatureTitle: "Vérifier les versions de Nito Core",
+  coreSignaturePurpose:
+    "Utilisez cette clé pour vérifier la signature détachée SHA256SUMS.minisig lorsqu’elle est incluse avec une version officielle de Nito Core.",
+  coreSignatureKeyId: "Identifiant de clé Minisign",
+  coreSignatureKeyLink: "Ouvrir la clé publique Minisign brute",
+  coreSignatureCommand: "Commande de vérification",
+  coreSignatureTrusted:
+    "Une vérification valide doit afficher le commentaire de confiance :",
   copy: "Copier",
   copied: "Copié",
   copyFail: "Copie indisponible. Sélectionnez et copiez le texte.",

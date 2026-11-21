@@ -72,6 +72,13 @@ server {
         expires 7d;
     }
 
+    location = /security/nito-core-release.pub {
+        default_type text/plain;
+        gzip off;
+        try_files $uri =404;
+        expires 1h;
+    }
+
     location = /data/activation.json {
         alias /var/lib/nito-site-activation/activation.json;
         default_type application/json;

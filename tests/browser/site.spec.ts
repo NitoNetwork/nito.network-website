@@ -271,8 +271,19 @@ test("reduced motion and forced colors retain a usable static interface", async 
 test("key public pages have no automated accessibility violations", async ({
   page,
 }) => {
-  for (const path of ["/en/", "/en/network/", "/en/easynode/"]) {
+  for (const path of [
+    "/en/",
+    "/en/network/",
+    "/en/easynode/",
+    "/en/wallets/",
+  ]) {
     await page.goto(path);
+    if (path.endsWith("/wallets/")) {
+      await page.getByText("Verify your download", { exact: true }).click();
+      await expect(
+        page.getByRole("heading", { name: "Verify Nito Core releases" }),
+      ).toBeVisible();
+    }
     const results = await new AxeBuilder({ page }).analyze();
     expect(
       results.violations.map(({ id, impact, nodes }) => ({
